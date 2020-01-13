@@ -37,7 +37,7 @@ class PhotoFilterViewController: UIViewController {
         filter.setValue(ciImage, forKey: kCIInputImageKey) //input image
         filter.setValue(brightnessSlider.value, forKey: kCIInputBrightnessKey)
         filter.setValue(contrastSlider.value, forKey: kCIInputContrastKey)
-        filter.setValue(saturationSlider, forKey: kCIInputSaturationKey)
+        filter.setValue(saturationSlider.value, forKey: kCIInputSaturationKey)
         
         // Get output image
         guard let outputCIImage = filter.outputImage else { return image }
@@ -65,7 +65,10 @@ class PhotoFilterViewController: UIViewController {
 	// MARK: Slider events
 	
 	@IBAction func brightnessChanged(_ sender: UISlider) {
-
+        //upwrap the original image
+        if let originalImage = originalImage {
+        imageView.image = filterImage(originalImage)
+        }
 	}
 	
 	@IBAction func contrastChanged(_ sender: Any) {
