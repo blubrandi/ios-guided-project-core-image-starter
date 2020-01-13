@@ -28,7 +28,20 @@ class PhotoFilterViewController: UIViewController {
     // Helper function
     private func filterImage(_ image: UIImage) -> UIImage {
         
-        return image // TODO: return the filtered image.  
+        //return the original image if something isn't working
+        guard let cgImage = image.cgImage else { return image }
+
+        // setup the filter using a dictionary
+        let ciImage = CIImage(cgImage: cgImage)
+        
+        filter.setValue(ciImage, forKey: kCIInputImageKey) //input image
+        filter.setValue(brightnessSlider.value, forKey: kCIInputBrightnessKey)
+        filter.setValue(contrastSlider.value, forKey: kCIInputContrastKey)
+        filter.setValue(saturationSlider, forKey: kCIInputSaturationKey)
+        
+        
+        
+        return image // TODO: return the filtered image.
     }
 	
 	// MARK: Actions
