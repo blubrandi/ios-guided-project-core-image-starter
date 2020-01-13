@@ -4,11 +4,37 @@ import Photos
 
 class PhotoFilterViewController: UIViewController {
     
-    // Setup the original image
+//    // Setup the original image
+//    var originalImage: UIImage? {
+//        //updates the UI with the image that was picked
+//        didSet {
+//            print("Update the UI")
+//            updateImage()
+//        }
+//    }
+//
+//    var scaledImage: UIImage? {
+//        didSet {
+//            updateImage()
+//        }
+//    }
+    
+    // From Paul:
+    
     var originalImage: UIImage? {
-        //updates the UI with the image that was picked
         didSet {
-            print("Update the UI")
+            guard let originalImage = originalImage else { return }
+            // Height and width
+            var scaledSize = imageView.bounds.size
+            // 1x, 2x, or 3x
+            let scale = UIScreen.main.scale
+            scaledSize = CGSize(width: scaledSize.width * scale, height: scaledSize.height * scale)
+            print("size: \(scaledSize)")
+            scaledImage = originalImage.imageByScaling(toSize: scaledSize)
+        }
+    }
+    var scaledImage: UIImage? {
+        didSet {
             updateImage()
         }
     }
@@ -104,8 +130,8 @@ class PhotoFilterViewController: UIViewController {
         // function to apply to all three function
     private func updateImage() {
         //upwrap the original image
-        if let originalImage = originalImage {
-        imageView.image = filterImage(originalImage)
+        if let scaledImage = scaledImage {
+        imageView.image = filterImage(scaledImage)
         } else {
             imageView.image = nil
         }
