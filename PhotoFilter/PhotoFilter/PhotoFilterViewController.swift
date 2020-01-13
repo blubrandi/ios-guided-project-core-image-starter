@@ -39,9 +39,14 @@ class PhotoFilterViewController: UIViewController {
         filter.setValue(contrastSlider.value, forKey: kCIInputContrastKey)
         filter.setValue(saturationSlider, forKey: kCIInputSaturationKey)
         
+        // Get output image
+        guard let outputCIImage = filter.outputImage else { return image }
+        
+        // Render the output - going back to core graphics, input the output image and give it the size of the original image, because sometimes we get extra data outside of the image and it can make the image look smaller
+        guard let outputCGImage = context.createCGImage(outputCIImage, from: CGRect(origin: CGPoint.zero, size: image.size)) else { return image }
         
         
-        return image // TODO: return the filtered image.
+        return UIImage(cgImage: outputCGImage)
     }
 	
 	// MARK: Actions
