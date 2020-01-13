@@ -5,7 +5,13 @@ import Photos
 class PhotoFilterViewController: UIViewController {
     
     // Setup the original image
-    var originalImage: UIImage?
+    var originalImage: UIImage? {
+        //updates the UI with the image that was picked
+        didSet {
+            print("Update the UI")
+            updateImage()
+        }
+    }
     
     // Grab filter we're using
     private var filter = CIFilter(name: "CIColorControls")! //force unwrapped just for the lecture
@@ -112,6 +118,8 @@ extension PhotoFilterViewController: UIImagePickerControllerDelegate {
         // implement actual selection of the image, dictionary of attributes
         
         if let image = info[.editedImage] as? UIImage { // .originalImage, if there is no edited image
+            originalImage = image
+        } else if let image = info[.originalImage] as? UIImage {
             originalImage = image
         }
         picker.dismiss(animated: true, completion: nil)
